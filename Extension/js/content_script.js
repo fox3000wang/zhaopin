@@ -1,6 +1,7 @@
 console.log('[content_script] load');
 
-let urls = [];
+const delay = 3000;
+const postUrl = 'http://localhost:9070/report';
 
 async function main() {
   console.log('[content_script] main');
@@ -19,7 +20,7 @@ async function getUrlList() {
   for (let i = 0; i < joblist.length; i++) {
     let url = joblist[i].getElementsByClassName('el')[0].href;
     chrome.runtime.sendMessage({ url });
-    await sleep(2000);
+    await sleep(delay);
   }
 }
 
@@ -30,10 +31,11 @@ function clickNext() {
 
 // 获取明细页面信息
 async function getInfo() {
-  await sleep(2000);
+  await sleep(delay);
   const txt = document.getElementsByClassName('cn')[0].children[0].innerText;
   console.log(txt);
-  // 这里等着写发送数据的业务
+  // todo 这里等着写发送数据的业务
+  await postReport({ txt });
   window.close();
 }
 
@@ -47,6 +49,11 @@ function isSearchPage() {
 function isInfoPage() {
   console.log(`[content_script] isInfoPage `, /jobs.51job.com/.test(document.baseURI));
   return /jobs.51job.com/.test(document.baseURI);
+}
+
+// 向服服务端发送数据
+async function postReport(body) {
+  await superagent.post(postUrl).type('form').send(body);
 }
 
 // 模拟sleep()

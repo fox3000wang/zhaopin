@@ -1,11 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "name",
-  "description": "getPages",
-  "version": "0.1.1",
+  "name": "zhaopin",
+  "description": "fetch data from 51job",
+  "version": "0.0.1",
   "action": {
     "default_icon": "icon.png",
-    "default_title": "free your hands",
     "default_popup": "popup.html"
   },
   "permissions": ["scripting", "alarms", "notifications", "storage"],
@@ -21,7 +20,12 @@
   "content_scripts": [
     {
       "matches": ["https://*.51job.com/*"],
-      "js": ["js/content_script.js"],
+      "js": [
+        "js/lib/jquery-1.8.3.js",
+        "js/lib/polyfill.min.js",
+        "js/lib/superagent.js",
+        "js/content_script.js"
+      ],
       "run_at": "document_start"
     }
   ],
