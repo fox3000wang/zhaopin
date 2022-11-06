@@ -1,6 +1,6 @@
 console.log('[content_script] load');
 
-const delay = 3000;
+const delay = 15000;
 const postUrl = 'http://localhost:9070/report';
 
 async function main() {
@@ -18,9 +18,9 @@ async function getUrlList() {
 
   const joblist = document.getElementsByClassName('j_joblist')[0].children;
   for (let i = 0; i < joblist.length; i++) {
+    await sleep(delay);
     let url = joblist[i].getElementsByClassName('el')[0].href;
     chrome.runtime.sendMessage({ url });
-    await sleep(delay);
   }
 }
 
@@ -32,10 +32,33 @@ function clickNext() {
 // 获取明细页面信息
 async function getInfo() {
   await sleep(delay);
-  const txt = document.getElementsByClassName('cn')[0].children[0].innerText;
-  console.log(txt);
+
+  const position = document.getElementsByClassName('cn')[0].children[0].innerText; // 职位
+  const income = document.getElementsByClassName('cn')[0].children[1].innerText; // 金额
+  const other = document.getElementsByClassName('cn')[0].children[2].innerText.split('|'); // 金额
+
+  const city = other[0].split('-')[0].trim(); // 城市
+  let area = other[0].split('-')[1]; // 区
+  area = area ? area.trim() : '';
+
+  const exp = other[1].trim(); //经验
+  const education = other[2].trim(); //学历
+  const release_month = other[3].trim().replace('发布', '').split('-')[0]; // 发布月
+  const release_day = other[3].trim().replace('发布', '').split('-')[1]; // 发布日
+  const release_year = new Date().getFullYear(); // 发布月
+
   // todo 这里等着写发送数据的业务
-  await postReport({ txt });
+  await postReport({
+    position,
+    income,
+    city,
+    area,
+    exp,
+    education,
+    release_month,
+    release_day,
+    release_year,
+  });
   window.close();
 }
 

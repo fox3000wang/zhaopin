@@ -1,14 +1,13 @@
 
 import { Injectable } from '@nestjs/common';
-import {} from 'mysql2';
+
 @Injectable()
 export class ReportService {
 
-  connection:any = null;  
+  connection:any;  
 
   constructor(){
-    const mysql = require('mysql2');
-    
+    const mysql = require('mysql2');    
     this.connection = mysql.createConnection({
       host: 'localhost',
       user: 'user',
@@ -16,19 +15,19 @@ export class ReportService {
       database: 'zhaopin',
       charset:'utf8',
     });
-    
   }
 
   postRecord(data:any): any {
     if(!data) return 'data is null';
     console.log(`[postRecord]`, JSON.stringify(data));
-    //console.log(`[postRecord] config`,JSON.stringify(data.config));
-    const {txt} = data;
+    
+    const {position, income, city, area, exp, education, release_month, release_day, release_year} = data;
+    const sql = `INSERT INTO jobs (position, income, city, area, exp, education, release_month, release_day, release_year) ` 
+    + `VALUES ("${position}","${income}","${city}","${area}","${exp}","${education}",${release_month},${release_day},${release_year});`
 
-    console.log(`INSERT INTO jobs (title) VALUES (${txt})`);
+    console.log(`[sql]: ${sql}`);
     this.connection.query(
-      // 'SELECT * FROM jobs; ',
-      `INSERT INTO jobs (title) VALUES ("${txt}")`,
+      sql,
       function(err, results, fields) {
         console.log(results); // results contains rows returned by server
         console.log(fields); // fields contains extra meta data about results, if available
