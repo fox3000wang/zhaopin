@@ -84,9 +84,9 @@
     const job_detail = document.getElementsByClassName('describtion__detail-content')[0].innerText; // 职位信息
     const work_address = document.getElementsByClassName('job-address__content-text')[0].innerText; // 工作地址
     const company_name = document.getElementsByClassName('company__title')[0].innerText; // 公司名
-    let company_trade = document.getElementsByClassName('company__industry')[0].innerText; // 公司行业   金融, 地产
+    let company_trade = document.getElementsByClassName('company__industry')[0]; // 公司行业   金融, 地产
     company_trade = company_trade ? company_trade.innerText : '';
-    let company_scale = document.getElementsByClassName('company__size')[0].innerText; // 公司规模   50人, 1000人
+    let company_scale = document.getElementsByClassName('company__size')[0]; // 公司规模   50人, 1000人
     company_scale = company_scale ? company_scale.innerText : '';
     let company_financing = document.getElementsByClassName('company__size')[1]; // 融资情况
     company_financing = company_financing ? company_financing.innerText : '';
