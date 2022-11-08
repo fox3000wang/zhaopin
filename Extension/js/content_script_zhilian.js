@@ -30,8 +30,8 @@
     const joblist = document.getElementsByClassName('positionlist')[0].children;
     for (let i = 0; i < joblist.length; i++) {
       await sleep(DELAY);
-      let url = joblist[i].children[0] ? joblist[i].children[0].href : '';
-      chrome.runtime.sendMessage({ url });
+      let url = joblist[i].children[0] ? joblist[i].children[0].href : null;
+      url ? chrome.runtime.sendMessage({ url }) : null;
     }
 
     clickNext();
