@@ -1,6 +1,7 @@
 // 全局配置
 
 const DELAY = 15000;
+//const DELAY = 5000;
 const POSTURL = 'http://localhost:9070/report';
 
 // 向服服务端发送数据

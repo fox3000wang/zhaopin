@@ -81,9 +81,10 @@
     const job_detail = document.getElementsByClassName('bmsg job_msg inbox')[0].innerText; // 职位信息
     const work_address = document.getElementsByClassName('fp')[1].innerText.split('\n')[1]; // 工作地址
     const company_name = document.getElementsByClassName('com_name')[0].innerText; // 公司名
-    const company_type = document.getElementsByClassName('com_tag')[0].children[0].innerText; // 公司类型 上市，民营
-    const company_scale = document.getElementsByClassName('com_tag')[0].children[1].innerText; // 公司规模
-    const company_trade = document.getElementsByClassName('com_tag')[0].children[2].innerText; // 公司类型 上市，民营
+    const company_type = document.getElementsByClassName('com_tag')[0].children[0].innerText; // 公司类型    上市,民营,合资
+    const company_scale = document.getElementsByClassName('com_tag')[0].children[1].innerText; // 公司规模   50人, 1000人
+    const company_trade = document.getElementsByClassName('com_tag')[0].children[2].innerText; // 公司行业   金融, 地产
+    const company_financing = ''; // 公司融资情况
 
     const source = '51job'; // 来源
     const url = document.baseURI; // 原始URL
@@ -105,6 +106,7 @@
       company_type,
       company_scale,
       company_trade,
+      company_financing,
       source,
       url,
     });

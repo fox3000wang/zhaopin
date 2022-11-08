@@ -37,6 +37,7 @@ export class ReportService {
       company_type,
       company_scale,
       company_trade,
+      company_financing,
       source,
       url,
     } = data;
@@ -45,11 +46,11 @@ export class ReportService {
       `INSERT INTO jobs (position, income, city, area, exp, education,` +
       `release_month, release_day, release_year, job_detail,` +
       `work_address, company_name, company_type, company_scale, company_trade,` +
-      `source, url)` +
+      `company_financing, source, url)` +
       ` VALUES ('${position}','${income}','${city}','${area}','${exp}','${education}',` +
       `${release_month},${release_day},${release_year},'${job_detail}',` +
       `'${work_address}','${company_name}','${company_type}','${company_scale}','${company_trade}',` +
-      `'${source}','${url}');`;
+      `'${company_financing}', '${source}','${url}');`;
 
     console.log(`[sql]: ${sql}`);
     

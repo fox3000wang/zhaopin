@@ -45,31 +45,25 @@
     document.getElementsByClassName('next')[0].children[0].click();
   }
 
-  // 获取明细页面信息
+  // 获取明细页面信息 更新于 11月7日
   async function getInfo() {
     await sleep(DELAY);
 
-    const position = document.getElementsByClassName('cn')[0].children[0].innerText; // 职位
-    const income = document.getElementsByClassName('cn')[0].children[1].innerText; // 金额
+    const position = document.getElementsByClassName('summary-plane__title')[0].innerText; // 职位
+    const income = document.getElementsByClassName('summary-plane__salary')[0].innerText; // 金额
 
-    const other = document.getElementsByClassName('cn')[0].children[2].innerText.split('|');
-    const city = other[0].split('-')[0].trim(); // 城市
-    let area = other[0].split('-')[1]; // 区
-    area = area ? area.trim() : '';
+    const city =
+      document.getElementsByClassName('summary-plane__info')[0].children[0].children[0].innerText; // 城市
+    let area = document.getElementsByClassName('summary-plane__info')[0].children[0].children[1]; // 区
+    area = area ? area.innerText : '';
 
-    let exp, education, release_month, release_day;
-    if (other.length === 4) {
-      exp = other[1].trim(); //经验
-      education = other[2].trim(); //学历
-      release_month = other[3].trim().replace('发布', '').split('-')[0]; // 发布月
-      release_day = other[3].trim().replace('发布', '').split('-')[1]; // 发布日
-    }
-    if (other.length === 3) {
-      exp = '';
-      education = other[1].trim(); //学历
-      release_month = other[2].trim().replace('发布', '').split('-')[0]; // 发布月
-      release_day = other[2].trim().replace('发布', '').split('-')[1]; // 发布日
-    }
+    const exp = document.getElementsByClassName('summary-plane__info')[0].children[1].innerText; // 经验
+    const education =
+      document.getElementsByClassName('summary-plane__info')[0].children[2].innerText; // 教育
+
+    const date = document
+      .getElementsByClassName('summary-plane__time')[0]
+      .innerText.replace('更新于 ', ''); // 10月2日
 
     let release_year;
     const now = new Date();
@@ -79,12 +73,22 @@
       release_year = now.getFullYear();
     }
 
-    const job_detail = document.getElementsByClassName('bmsg job_msg inbox')[0].innerText; // 职位信息
-    const work_address = document.getElementsByClassName('fp')[1].innerText.split('\n')[1]; // 工作地址
-    const company_name = document.getElementsByClassName('com_name')[0].innerText; // 公司名
-    const company_type = document.getElementsByClassName('com_tag')[0].children[0].innerText; // 公司类型 上市，民营
-    const company_scale = document.getElementsByClassName('com_tag')[0].children[1].innerText; // 公司规模
-    const company_trade = document.getElementsByClassName('com_tag')[0].children[2].innerText; // 公司类型 上市，民营
+    let release_month, release_day;
+    if (date === '今天') {
+      release_month = now.getMonth() + 1;
+      release_day = now.getDay();
+    } else {
+      release_month = date.split('月')[0]; // 发布月
+      release_day = date.split('月')[1].replace('日', ''); // 发布日
+    }
+
+    const job_detail = document.getElementsByClassName('describtion__detail-content')[0].innerText; // 职位信息
+    const work_address = document.getElementsByClassName('job-address__content-text')[0].innerText; // 工作地址
+    const company_name = document.getElementsByClassName('company__title')[0].innerText; // 公司名
+    const company_trade = document.getElementsByClassName('company__industry')[0].innerText; // 公司行业   金融, 地产
+    const company_scale = document.getElementsByClassName('company__size')[0].innerText; // 公司规模   50人, 1000人
+    const company_financing = document.getElementsByClassName('company__size')[1].innerText; // 融资情况
+    const company_type = ''; // 公司类型    上市,民营,合资
 
     const source = '智联招聘'; // 来源
     const url = document.baseURI; // 原始URL
@@ -106,6 +110,7 @@
       company_type,
       company_scale,
       company_trade,
+      company_financing,
       source,
       url,
     });

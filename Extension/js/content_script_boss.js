@@ -86,7 +86,7 @@
     const company_scale = document.getElementsByClassName('com_tag')[0].children[1].innerText; // 公司规模
     const company_trade = document.getElementsByClassName('com_tag')[0].children[2].innerText; // 公司类型 上市，民营
 
-    const source = '51job'; // 来源
+    const source = 'Boss'; // 来源
     const url = document.baseURI; // 原始URL
 
     // todo 这里等着写发送数据的业务
@@ -106,6 +106,7 @@
       company_type,
       company_scale,
       company_trade,
+      company_financing,
       source,
       url,
     });
