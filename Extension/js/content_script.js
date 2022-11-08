@@ -1,7 +1,14 @@
-console.log('[content_script] load');
+/**
+ * 本页只负责:
+ * 1. 在职位检索结果列表页面逐个打开每个明细页
+ * 2. 在明细页面打开以后提取职位信息发到数据库
+ * 3. 关闭广告页
+ */
 
-const delay = 15000;
-const postUrl = 'http://localhost:9070/report';
+console.log('[content_script] 51job load');
+
+const DELAY = 15000;
+const POSTURL = 'http://localhost:9070/report';
 
 async function main() {
   console.log('[content_script] main');
@@ -25,13 +32,13 @@ async function getUrlList() {
 
   const joblist = document.getElementsByClassName('j_joblist')[0].children;
   for (let i = 0; i < joblist.length; i++) {
-    await sleep(delay);
+    await sleep(DELAY);
     let url = joblist[i].getElementsByClassName('el')[0].href;
     chrome.runtime.sendMessage({ url });
   }
 
   clickNext();
-  await sleep(delay);
+  await sleep(DELAY);
   getUrlList();
 }
 
@@ -42,21 +49,47 @@ function clickNext() {
 
 // 获取明细页面信息
 async function getInfo() {
-  await sleep(delay);
+  await sleep(DELAY);
 
   const position = document.getElementsByClassName('cn')[0].children[0].innerText; // 职位
   const income = document.getElementsByClassName('cn')[0].children[1].innerText; // 金额
-  const other = document.getElementsByClassName('cn')[0].children[2].innerText.split('|'); // 金额
 
+  const other = document.getElementsByClassName('cn')[0].children[2].innerText.split('|');
   const city = other[0].split('-')[0].trim(); // 城市
   let area = other[0].split('-')[1]; // 区
   area = area ? area.trim() : '';
 
-  const exp = other[1].trim(); //经验
-  const education = other[2].trim(); //学历
-  const release_month = other[3].trim().replace('发布', '').split('-')[0]; // 发布月
-  const release_day = other[3].trim().replace('发布', '').split('-')[1]; // 发布日
-  const release_year = new Date().getFullYear(); // 发布月
+  let exp, education, release_month, release_day;
+  if (other.length === 4) {
+    exp = other[1].trim(); //经验
+    education = other[2].trim(); //学历
+    release_month = other[3].trim().replace('发布', '').split('-')[0]; // 发布月
+    release_day = other[3].trim().replace('发布', '').split('-')[1]; // 发布日
+  }
+  if (other.length === 3) {
+    exp = '';
+    education = other[1].trim(); //学历
+    release_month = other[2].trim().replace('发布', '').split('-')[0]; // 发布月
+    release_day = other[2].trim().replace('发布', '').split('-')[1]; // 发布日
+  }
+
+  let release_year;
+  const now = new Date();
+  if (now.getMonth < 3 && release_month > 9) {
+    release_year = now.getFullYear() - 1;
+  } else {
+    release_year = now.getFullYear();
+  }
+
+  const job_detail = document.getElementsByClassName('bmsg job_msg inbox')[0].innerText; // 职位信息
+  const work_address = document.getElementsByClassName('fp')[1].innerText.split('\n')[1]; // 工作地址
+  const company_name = document.getElementsByClassName('com_name')[0].innerText; // 公司名
+  const company_type = document.getElementsByClassName('com_tag')[0].children[0].innerText; // 公司类型 上市，民营
+  const company_scale = document.getElementsByClassName('com_tag')[0].children[1].innerText; // 公司规模
+  const company_trade = document.getElementsByClassName('com_tag')[0].children[2].innerText; // 公司类型 上市，民营
+
+  const source = '51job'; // 来源
+  const url = document.baseURI; // 原始URL
 
   // todo 这里等着写发送数据的业务
   await postReport({
@@ -69,7 +102,16 @@ async function getInfo() {
     release_month,
     release_day,
     release_year,
+    job_detail,
+    work_address,
+    company_name,
+    company_type,
+    company_scale,
+    company_trade,
+    source,
+    url,
   });
+
   window.close();
 }
 
@@ -87,10 +129,10 @@ const isHomePage = () => /www.51job.com/.test(document.baseURI);
 
 // 向服服务端发送数据
 async function postReport(body) {
-  await superagent.post(postUrl).type('form').send(body);
+  await superagent.post(POSTURL).type('form').send(body);
 }
 
 // 模拟sleep()
-const sleep = delay => new Promise(resolve => setTimeout(resolve, delay));
+const sleep = DELAY => new Promise(resolve => setTimeout(resolve, DELAY));
 
 main();

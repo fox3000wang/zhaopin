@@ -21,16 +21,43 @@ export class ReportService {
     if(!data) return 'data is null';
     console.log(`[postRecord]`, JSON.stringify(data));
     
-    const {position, income, city, area, exp, education, release_month, release_day, release_year} = data;
-    const sql = `INSERT INTO jobs (position, income, city, area, exp, education, release_month, release_day, release_year) ` 
-    + `VALUES ("${position}","${income}","${city}","${area}","${exp}","${education}",${release_month},${release_day},${release_year});`
+    const {
+      position,
+      income,
+      city,
+      area,
+      exp,
+      education,
+      release_month,
+      release_day,
+      release_year,
+      job_detail,
+      work_address,
+      company_name,
+      company_type,
+      company_scale,
+      company_trade,
+      source,
+      url,
+    } = data;
+    
+    const sql:string =
+      `INSERT INTO jobs (position, income, city, area, exp, education,` +
+      `release_month, release_day, release_year, job_detail,` +
+      `work_address, company_name, company_type, company_scale, company_trade,` +
+      `source, url)` +
+      ` VALUES ('${position}','${income}','${city}','${area}','${exp}','${education}',` +
+      `${release_month},${release_day},${release_year},'${job_detail}',` +
+      `'${work_address}','${company_name}','${company_type}','${company_scale}','${company_trade}',` +
+      `'${source}','${url}');`;
 
     console.log(`[sql]: ${sql}`);
+    
     this.connection.query(
       sql,
       function(err, results, fields) {
         console.log(results); // results contains rows returned by server
-        console.log(fields); // fields contains extra meta data about results, if available
+        err && console.log(err);
       }
     );
     
