@@ -5,14 +5,21 @@ const postUrl = 'http://localhost:9070/report';
 
 async function main() {
   console.log('[content_script] main');
-  await sleep(1000);
+  await sleep(500);
+  if (!is51job()) return;
+  checkAd();
   isSearchPage() ? getUrlList() : null;
   isInfoPage() ? getInfo() : null;
 }
 
-/**
- * 处理查询列表
- */
+// 检查是不是广告页, 广告页就直接关闭
+function checkAd() {
+  if (!isSearchPage() && !isInfoPage() && !isHomePage()) {
+    window.close();
+  }
+}
+
+// 处理查询列表
 async function getUrlList() {
   console.log('[content_script] getUrlList');
 
@@ -22,6 +29,10 @@ async function getUrlList() {
     let url = joblist[i].getElementsByClassName('el')[0].href;
     chrome.runtime.sendMessage({ url });
   }
+
+  clickNext();
+  await sleep(delay);
+  getUrlList();
 }
 
 // 点击下一页
@@ -62,17 +73,17 @@ async function getInfo() {
   window.close();
 }
 
+// 检测是否为51job
+const is51job = () => /51job.com/.test(document.baseURI);
+
 // 检测当前页是不是查询列表页
-function isSearchPage() {
-  console.log(`[content_script] isSearchPage `, /search.51job.com/.test(document.baseURI));
-  return /search.51job.com/.test(document.baseURI);
-}
+const isSearchPage = () => /search.51job.com/.test(document.baseURI);
 
 // 检测当前页是不是明细页
-function isInfoPage() {
-  console.log(`[content_script] isInfoPage `, /jobs.51job.com/.test(document.baseURI));
-  return /jobs.51job.com/.test(document.baseURI);
-}
+const isInfoPage = () => /jobs.51job.com/.test(document.baseURI);
+
+// 检测是否为首页
+const isHomePage = () => /www.51job.com/.test(document.baseURI);
 
 // 向服服务端发送数据
 async function postReport(body) {
