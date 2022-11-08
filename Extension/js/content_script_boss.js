@@ -4,7 +4,6 @@
  * 2. 在明细页面打开以后提取职位信息发到数据库
  * 3. 关闭广告页
  */
-
 (() => {
   console.log('[content_script_boss] boss load');
 

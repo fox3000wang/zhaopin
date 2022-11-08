@@ -4,7 +4,6 @@
  * 2. 在明细页面打开以后提取职位信息发到数据库
  * 3. 关闭广告页
  */
-
 (() => {
   console.log('[content_script_zhilian] zhilian load');
 
@@ -31,7 +30,7 @@
     const joblist = document.getElementsByClassName('positionlist')[0].children;
     for (let i = 0; i < joblist.length; i++) {
       await sleep(DELAY);
-      let url = joblist[i].children[0].href;
+      let url = joblist[i].children[0] ? joblist[i].children[0].href : '';
       chrome.runtime.sendMessage({ url });
     }
 
@@ -42,7 +41,7 @@
 
   // 点击下一页
   function clickNext() {
-    document.getElementsByClassName('next')[0].children[0].click();
+    document.getElementsByClassName('btn soupager__btn')[1].click();
   }
 
   // 获取明细页面信息 更新于 11月7日
@@ -85,9 +84,13 @@
     const job_detail = document.getElementsByClassName('describtion__detail-content')[0].innerText; // 职位信息
     const work_address = document.getElementsByClassName('job-address__content-text')[0].innerText; // 工作地址
     const company_name = document.getElementsByClassName('company__title')[0].innerText; // 公司名
-    const company_trade = document.getElementsByClassName('company__industry')[0].innerText; // 公司行业   金融, 地产
-    const company_scale = document.getElementsByClassName('company__size')[0].innerText; // 公司规模   50人, 1000人
-    const company_financing = document.getElementsByClassName('company__size')[1].innerText; // 融资情况
+    let company_trade = document.getElementsByClassName('company__industry')[0].innerText; // 公司行业   金融, 地产
+    company_trade = company_trade ? company_trade.innerText : '';
+    let company_scale = document.getElementsByClassName('company__size')[0].innerText; // 公司规模   50人, 1000人
+    company_scale = company_scale ? company_scale.innerText : '';
+    let company_financing = document.getElementsByClassName('company__size')[1]; // 融资情况
+    company_financing = company_financing ? company_financing.innerText : '';
+
     const company_type = ''; // 公司类型    上市,民营,合资
 
     const source = '智联招聘'; // 来源

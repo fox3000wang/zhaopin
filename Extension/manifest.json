@@ -19,7 +19,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.51job.com/*", "https://*.zhaopin.com/*", "https://*.zhipin.com/*"],
+      "matches": [
+        "https://*.51job.com/*",
+        "http://*.51job.com/*",
+        "https://*.zhaopin.com/*",
+        "https://*.zhipin.com/*"
+      ],
       "js": [
         "js/lib/jquery-1.8.3.js",
         "js/lib/polyfill.min.js",
