@@ -79,7 +79,8 @@
     }
 
     const job_detail = document.getElementsByClassName('bmsg job_msg inbox')[0].innerText; // 职位信息
-    const work_address = document.getElementsByClassName('fp')[1].innerText.split('\n')[1]; // 工作地址
+    let work_address = document.getElementsByClassName('fp')[1]; // 工作地址
+    work_address = work_address ? work_address.innerText.split('\n')[1] : '';
     const company_name = document.getElementsByClassName('com_name')[0].innerText; // 公司名
     const company_type = document.getElementsByClassName('com_tag')[0].children[0].innerText; // 公司类型    上市,民营,合资
     const company_scale = document.getElementsByClassName('com_tag')[0].children[1].innerText; // 公司规模   50人, 1000人
