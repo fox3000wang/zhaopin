@@ -31,7 +31,9 @@
     for (let i = 0; i < joblist.length; i++) {
       await sleep(DELAY);
       let url = joblist[i].getElementsByClassName('el')[0].href;
-      chrome.runtime.sendMessage({ url });
+      if (url) {
+        chrome.runtime.sendMessage({ url });
+      }
     }
 
     clickNext();
