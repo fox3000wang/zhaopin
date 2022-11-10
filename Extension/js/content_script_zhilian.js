@@ -59,9 +59,14 @@
     let area = document.getElementsByClassName('summary-plane__info')[0].children[0].children[1]; // 区
     area = area ? area.innerText : '';
 
-    const exp = document.getElementsByClassName('summary-plane__info')[0].children[1].innerText; // 经验
-    const education =
-      document.getElementsByClassName('summary-plane__info')[0].children[2].innerText; // 教育
+    let exp, education;
+    if (document.getElementsByClassName('summary-plane__info')[0].children.length === 6) {
+      exp = document.getElementsByClassName('summary-plane__info')[0].children[2].innerText; // 经验
+      education = document.getElementsByClassName('summary-plane__info')[0].children[3].innerText; // 教育
+    } else {
+      exp = document.getElementsByClassName('summary-plane__info')[0].children[1].innerText; // 经验
+      education = document.getElementsByClassName('summary-plane__info')[0].children[2].innerText; // 教育
+    }
 
     const date = document
       .getElementsByClassName('summary-plane__time')[0]
@@ -95,9 +100,10 @@
     company_financing = company_financing ? company_financing.innerText : '';
 
     const company_type = ''; // 公司类型    上市,民营,合资
-
     const source = '智联招聘'; // 来源
     const url = document.baseURI; // 原始URL
+
+    debugger;
 
     // todo 这里等着写发送数据的业务
     await postReport({

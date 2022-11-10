@@ -85,7 +85,7 @@
     company_trade = company_trade ? company_trade.children[4].innerText : '';
 
     const source = 'Boss'; // 来源
-    const url = document.baseURI; // 原始URL
+    const url = document.baseURI.split('?')[0]; // 原始URL
 
     // todo 这里等着写发送数据的业务
     await postReport({

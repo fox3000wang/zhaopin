@@ -91,7 +91,7 @@
     const company_financing = ''; // 公司融资情况
 
     const source = '51job'; // 来源
-    const url = document.baseURI; // 原始URL
+    const url = document.baseURI.split('?')[0]; // 原始URL
 
     // todo 这里等着写发送数据的业务
     await postReport({
