@@ -37,7 +37,7 @@
     }
 
     clickNext();
-    await sleep(DELAY);
+    //await sleep(DELAY);
     getUrlList();
   }
 
@@ -77,7 +77,7 @@
     let release_month, release_day;
     if (date === '今天') {
       release_month = now.getMonth() + 1;
-      release_day = now.getDay();
+      release_day = now.getDate();
     } else {
       release_month = date.split('月')[0]; // 发布月
       release_day = date.split('月')[1].replace('日', ''); // 发布日

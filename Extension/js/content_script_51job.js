@@ -35,7 +35,7 @@
     }
 
     clickNext();
-    await sleep(DELAY);
+    //await sleep(DELAY);
     getUrlList();
   }
 

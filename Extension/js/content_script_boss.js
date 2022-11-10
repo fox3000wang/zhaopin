@@ -27,17 +27,16 @@
   async function getUrlList() {
     console.log('[content_script_boss] getUrlList');
 
-    const joblist = document.getElementsByClassName('j_joblist')[0].children;
+    const joblist = document.getElementsByClassName('job-card-body clearfix');
     for (let i = 0; i < joblist.length; i++) {
       await sleep(DELAY);
-      let url = joblist[i].getElementsByClassName('el')[0].href;
+      let url = joblist[i].getElementsByClassName('job-card-left')[0].href;
       if (url) {
         chrome.runtime.sendMessage({ url });
       }
     }
-
     clickNext();
-    await sleep(DELAY);
+    //await sleep(DELAY);
     getUrlList();
   }
 
@@ -50,42 +49,34 @@
   async function getInfo() {
     await sleep(DELAY);
 
-    const position = document.getElementsByClassName('cn')[0].children[0].innerText; // 职位
-    const income = document.getElementsByClassName('cn')[0].children[1].innerText; // 金额
+    const position =
+      document.getElementsByClassName('info-primary')[0].children[1].children[0].innerText; // 职位
+    const income =
+      document.getElementsByClassName('info-primary')[0].children[1].children[1].innerText; // 金额
 
-    const other = document.getElementsByClassName('cn')[0].children[2].innerText.split('|');
-    const city = other[0].split('-')[0].trim(); // 城市
-    let area = other[0].split('-')[1]; // 区
-    area = area ? area.trim() : '';
+    const city = document.getElementsByClassName('text-desc text-city')[0].innerText; // 城市
+    const address = document.getElementsByClassName('location-address')[0].innerText;
+    const area = address.split('区')[0].replace('上海', '') + '区';
 
-    let exp, education, release_month, release_day;
-    if (other.length === 4) {
-      exp = other[1].trim(); //经验
-      education = other[2].trim(); //学历
-      release_month = other[3].trim().replace('发布', '').split('-')[0]; // 发布月
-      release_day = other[3].trim().replace('发布', '').split('-')[1]; // 发布日
-    }
-    if (other.length === 3) {
-      exp = '';
-      education = other[1].trim(); //学历
-      release_month = other[2].trim().replace('发布', '').split('-')[0]; // 发布月
-      release_day = other[2].trim().replace('发布', '').split('-')[1]; // 发布日
-    }
+    const exp = document.getElementsByClassName('text-desc text-experiece')[0].innerText; //经验
+    const education = document.getElementsByClassName('text-desc text-degree')[0].innerText; //学历
 
-    let release_year;
     const now = new Date();
-    if (now.getMonth < 3 && release_month > 9) {
-      release_year = now.getFullYear() - 1;
-    } else {
-      release_year = now.getFullYear();
-    }
+    const release_month = now.getMonth() + 1; // 发布月
+    const release_day = now.getDate(); // 发布日
+    const release_year = now.getFullYear(); // 发布年
 
-    const job_detail = document.getElementsByClassName('bmsg job_msg inbox')[0].innerText; // 职位信息
-    const work_address = document.getElementsByClassName('fp')[1].innerText.split('\n')[1]; // 工作地址
-    const company_name = document.getElementsByClassName('com_name')[0].innerText; // 公司名
-    const company_type = document.getElementsByClassName('com_tag')[0].children[0].innerText; // 公司类型 上市，民营
-    const company_scale = document.getElementsByClassName('com_tag')[0].children[1].innerText; // 公司规模
-    const company_trade = document.getElementsByClassName('com_tag')[0].children[2].innerText; // 公司类型 上市，民营
+    const job_detail = document.getElementsByClassName('job-sec-text')[0].innerText; // 职位信息
+    const work_address = document.getElementsByClassName('location-address')[0].innerText; // 工作地址
+
+    const company_info = document.getElementsByClassName('level-list')[0];
+    const company_name = company_info.children[0].innerText.split('\n')[1]; // 公司名
+    const company_type = company_info.children[3].innerText; // 公司类型 上市，民营
+
+    const company_financing =
+      document.getElementsByClassName('sider-company')[0].children[2].innerText; // 融资情况
+    const company_scale = document.getElementsByClassName('sider-company')[0].children[3].innerText; // 公司规模
+    const company_trade = document.getElementsByClassName('sider-company')[0].children[4].innerText; // 公司行业
 
     const source = 'Boss'; // 来源
     const url = document.baseURI; // 原始URL
@@ -119,13 +110,13 @@
   const isBoss = () => /zhipin.com/.test(document.baseURI);
 
   // 检测当前页是不是查询列表页
-  const isSearchPage = () => /search.zhipin.com/.test(document.baseURI);
+  const isSearchPage = () => /www.zhipin.com\/web/.test(document.baseURI);
 
   // 检测当前页是不是明细页
-  const isInfoPage = () => /jobs.zhipin.com/.test(document.baseURI);
+  const isInfoPage = () => /www.zhipin.com\/job_detail/.test(document.baseURI);
 
   // 检测是否为首页
-  const isHomePage = () => /www.zhipin.com/.test(document.baseURI);
+  const isHomePage = () => /www.zhipin.com\/shanghai/.test(document.baseURI);
 
   // 等待页面加载完毕以后再执行main
   window.onload = main;
