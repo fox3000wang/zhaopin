@@ -9,7 +9,7 @@
 
   async function main() {
     console.log('[content_script_zhilian] main');
-    await sleep(500);
+    await sleep(200);
     if (!isZhiLian()) return;
     checkAd();
     isSearchPage() ? getUrlList() : null;
@@ -31,7 +31,9 @@
     for (let i = 0; i < joblist.length; i++) {
       await sleep(DELAY);
       let url = joblist[i].children[0] ? joblist[i].children[0].href : null;
-      url ? chrome.runtime.sendMessage({ url }) : null;
+      if (url) {
+        chrome.runtime.sendMessage({ url });
+      }
     }
 
     clickNext();
@@ -133,5 +135,6 @@
   // 检测是否为首页
   const isHomePage = () => /www.zhaopin.com/.test(document.baseURI);
 
-  main();
+  // 等待页面加载完毕以后再执行main
+  window.onload = main;
 })();

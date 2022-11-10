@@ -9,7 +9,7 @@
 
   async function main() {
     console.log('[content_script_51job] main');
-    await sleep(500);
+    await sleep(200);
     if (!is51job()) return;
     checkAd();
     isSearchPage() ? getUrlList() : null;
@@ -127,5 +127,6 @@
   // 检测是否为首页
   const isHomePage = () => /www.51job.com/.test(document.baseURI);
 
-  main();
+  // 等待页面加载完毕以后再执行main
+  window.onload = main;
 })();

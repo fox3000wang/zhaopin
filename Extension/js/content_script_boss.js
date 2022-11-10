@@ -9,7 +9,7 @@
 
   async function main() {
     console.log('[content_script_boss] main');
-    await sleep(500);
+    await sleep(200);
     if (!isBoss()) return;
     checkAd();
     isSearchPage() ? getUrlList() : null;
@@ -125,5 +125,6 @@
   // 检测是否为首页
   const isHomePage = () => /www.zhipin.com/.test(document.baseURI);
 
-  main();
+  // 等待页面加载完毕以后再执行main
+  window.onload = main;
 })();
