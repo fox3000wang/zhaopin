@@ -137,5 +137,5 @@
   const isHomePage = () => /www.zhaopin.com/.test(document.baseURI);
 
   // 等待页面加载完毕以后再执行main
-  window.onload = main;
+  document.addEventListener('DOMContentLoaded', main);
 })();

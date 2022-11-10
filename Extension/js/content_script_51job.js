@@ -32,7 +32,9 @@
     for (let i = 0; i < joblist.length; i++) {
       await sleep(DELAY);
       let url = joblist[i].getElementsByClassName('el')[0].href;
-      chrome.runtime.sendMessage({ url });
+      if (url) {
+        chrome.runtime.sendMessage({ url });
+      }
     }
     clickNext();
     getUrlList();
@@ -129,5 +131,5 @@
   const isHomePage = () => /www.51job.com/.test(document.baseURI);
 
   // 等待页面加载完毕以后再执行main
-  window.onload = main;
+  document.addEventListener('DOMContentLoaded', main);
 })();

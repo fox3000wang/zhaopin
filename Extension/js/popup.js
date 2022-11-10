@@ -17,10 +17,10 @@
     const url = urls[2];
     chrome.runtime.sendMessage({ url });
   }
-  function btn0ClickHandler() {
-    urls.forEach(url => {
+  async function btn0ClickHandler() {
+    urls.forEach(async url => {
       chrome.runtime.sendMessage({ url });
-      sleep(1000);
+      await sleep(2000);
     });
   }
 
