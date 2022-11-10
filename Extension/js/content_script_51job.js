@@ -26,6 +26,7 @@
   // 处理查询列表
   async function getUrlList() {
     console.log('[content_script_51job] getUrlList');
+    await sleep(DELAY);
 
     const joblist = document.getElementsByClassName('j_joblist')[0].children;
     for (let i = 0; i < joblist.length; i++) {
@@ -33,19 +34,19 @@
       let url = joblist[i].getElementsByClassName('el')[0].href;
       chrome.runtime.sendMessage({ url });
     }
-
     clickNext();
-    //await sleep(DELAY);
     getUrlList();
   }
 
   // 点击下一页
   function clickNext() {
+    console.log('[content_script_51job] clickNext');
     document.getElementsByClassName('next')[0].children[0].click();
   }
 
   // 获取明细页面信息
   async function getInfo() {
+    console.log('[content_script_51job] getInfo');
     await sleep(DELAY);
 
     const position = document.getElementsByClassName('cn')[0].children[0].innerText; // 职位

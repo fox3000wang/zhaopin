@@ -26,6 +26,7 @@
   // 处理查询列表
   async function getUrlList() {
     console.log('[content_script_zhilian] getUrlList');
+    await sleep(DELAY);
 
     const joblist = document.getElementsByClassName('positionlist')[0].children;
     for (let i = 0; i < joblist.length; i++) {
@@ -35,19 +36,19 @@
         chrome.runtime.sendMessage({ url });
       }
     }
-
     clickNext();
-    //await sleep(DELAY);
     getUrlList();
   }
 
   // 点击下一页
   function clickNext() {
+    console.log('[content_script_zhilian] clickNext');
     document.getElementsByClassName('btn soupager__btn')[1].click();
   }
 
   // 获取明细页面信息 更新于 11月7日
   async function getInfo() {
+    console.log('[content_script_zhilian] getInfo');
     await sleep(DELAY);
 
     const position = document.getElementsByClassName('summary-plane__title')[0].innerText; // 职位
