@@ -6,7 +6,7 @@ import math
 
 
 def getSQL(key):
-    return "select " + key + " as type, count(" + key + ") as value from jobs group by " + key + " order by value desc limit 10;"
+    return "select " + key + " as type, count(" + key + ") as value from jobs group by " + key + " order by value desc limit 8;"
 
 
 def getData(query):
@@ -32,17 +32,20 @@ def gemPic(key, data):
     type = []
     value = []
     for d in data:
-        type.append(d[0])
+        if d[0]:
+            type.append(d[0] + '(' + str(d[1]) + ')')
+        else:
+            type.append('其他' + '(' + str(d[1]) + ')')
         value.append(d[1])
 
     ax.pie(value, labels=type, autopct='%1.2f%%')
-    plt.savefig("./output/" + key + ".png")
+    plt.savefig("./output/pie-" + key + ".png")
     # plt.show()
 
 
 def main():
     key = ['source', 'position', 'area', 'exp', 'education',
-           'company_trade', 'company_financing']
+           'company_type', 'income', 'company_trade', 'company_financing']
 
     for k in key:
         query = getSQL(k)
