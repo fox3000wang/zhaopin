@@ -108,3 +108,5 @@ server/target_.xlsx
 server/data/report.json
 server/data/~$report.xlsx
 server/template/~$report_month.xlsx
+output/
+*tempCodeRunnerFile.py
