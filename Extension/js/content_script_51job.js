@@ -8,9 +8,9 @@
   console.log('[content_script_51job] 51job load');
 
   async function main() {
-    console.log('[content_script_51job] main');
     await sleep(200);
     if (!is51job()) return;
+    console.log('[content_script_51job] main');
     checkAd();
     isSearchPage() ? getUrlList() : null;
     isInfoPage() ? getInfo() : null;

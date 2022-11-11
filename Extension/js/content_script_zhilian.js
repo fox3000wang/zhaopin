@@ -8,9 +8,9 @@
   console.log('[content_script_zhilian] zhilian load');
 
   async function main() {
-    console.log('[content_script_zhilian] main');
     await sleep(200);
     if (!isZhiLian()) return;
+    console.log('[content_script_zhilian] main');
     checkAd();
     isSearchPage() ? getUrlList() : null;
     isInfoPage() ? getInfo() : null;
@@ -98,12 +98,10 @@
     company_scale = company_scale ? company_scale.innerText : '';
     let company_financing = document.getElementsByClassName('company__size')[1]; // 融资情况
     company_financing = company_financing ? company_financing.innerText : '';
-
     const company_type = ''; // 公司类型    上市,民营,合资
-    const source = '智联招聘'; // 来源
-    const url = document.baseURI; // 原始URL
 
-    debugger;
+    const source = '智联招聘'; // 来源
+    const url = document.baseURI.split('?')[0]; // 原始URL
 
     // todo 这里等着写发送数据的业务
     await postReport({

@@ -8,9 +8,9 @@
   console.log('[content_script_boss] boss load');
 
   async function main() {
-    console.log('[content_script_boss] main');
     await sleep(200);
     if (!isBoss()) return;
+    console.log('[content_script_boss] main');
     checkAd();
     isSearchPage() ? getUrlList() : null;
     isInfoPage() ? getInfo() : null;
