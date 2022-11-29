@@ -6,9 +6,10 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "cross-env RUNNING_ENV=prod nest build",
+    "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
+    "prod": "cross-env RUNNING_ENV=prod node dist/main",
+    "beta": "cross-env RUNNING_ENV=beta node dist/main",
     "d": "cross-env RUNNING_ENV=dev nest start --watch",
     "start:debug": "cross-env RUNNING_ENV=dev nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -19,8 +20,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "publish": "rsync -av ../zhaopin ubuntu@q.wangzm.cn:/home/ubuntu/",
-    "docker:build": "nest build && docker build . -t zhaopin",
-    "dbb": "nest build && docker build . -t zhaopin-server"
+    "docker": "rimraf dist && nest build && docker build . -t zhaopin-server"
   },
   "dependencies": {
     "@nestjs/common": "^9.1.6",
