@@ -13,7 +13,7 @@ def getData(query):
     print(query)
     db = pymysql.connect(host='127.0.0.1',
                          user='user',
-                         password='user',
+                         password='useruser',
                          database='zhaopin')
     cursor = db.cursor()
     result = cursor.execute(query)
