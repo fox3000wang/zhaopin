@@ -13,4 +13,4 @@ RUN npm install
 #RUN npm run build
 
 EXPOSE 9998
-CMD ["npm","run","beta"]
+CMD ["npm","run","prod"]
