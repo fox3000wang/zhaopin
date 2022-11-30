@@ -1,6 +1,6 @@
 // 全局配置
 
-const DELAY = 15000;
+const DELAY = 15000 * 2;
 //const DELAY = 5000;
 const POSTURL = 'http://localhost:9998/report';
 

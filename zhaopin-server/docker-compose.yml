@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-  zhaopin-server  :
+  zhaopin:
     image: zhaopin-server
     ports:
       - 9998:9998
